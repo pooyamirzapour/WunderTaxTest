@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,7 +8,7 @@ public abstract class AbstractBook {
 
     private String title;
     private String isbn;
-    private List<Author> authors;
+    private List<Author> authors = new ArrayList<>();
 
 
     public String getTitle() {

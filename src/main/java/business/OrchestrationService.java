@@ -18,17 +18,17 @@ public enum OrchestrationService {
 
     INSTANCE;
 
-    private String bookPath = "src/main/resources/org.echocat.kata.java.part1.data/books.csv";
-    private String authorPath = "src/main/resources/org.echocat.kata.java.part1.data/authors.csv";
-    private String magazinePath = "src/main/resources/org.echocat.kata.java.part1.data/magazines.csv";
+    private String bookPath = "src/main/resources/org/echocat/kata/java/part1/data/books.csv";
+    private String authorPath = "src/main/resources/org/echocat/kata/java/part1/data/authors.csv";
+    private String magazinePath = "src/main/resources/org/echocat/kata/java/part1/data/magazines.csv";
 
     public void printAll() throws IOException {
         BufferedReader bookBufferedReader = ReadServiceImpl.INSTANCE.read(bookPath);
         BufferedReader authorBufferedReader = ReadServiceImpl.INSTANCE.read(authorPath);
         BufferedReader magazineBufferedReader = ReadServiceImpl.INSTANCE.read(magazinePath);
         List<AbstractBook> abstractBooks = new ArrayList<>();
-        readAuthors(bookBufferedReader);
-        readBooks(authorBufferedReader, abstractBooks);
+        readAuthors(authorBufferedReader);
+        readBooks(bookBufferedReader, abstractBooks);
         readMagazines(magazineBufferedReader, abstractBooks);
         PrintServiceImpl.INSTANCE.print(abstractBooks);
 
@@ -36,9 +36,10 @@ public enum OrchestrationService {
 
     private void readMagazines(BufferedReader magazineBufferedReader, List<AbstractBook> abstractBooks) throws IOException {
         String line;
+        int index=0;
         do {
             line = magazineBufferedReader.readLine();
-            if (line != null) {
+            if ( index!=0&&  line != null) {
                 String[] magazineString = line.toString().split(";");
                 Magazine magazine = new Magazine();
                 magazine.setTitle(magazineString[0].trim());
@@ -53,44 +54,56 @@ public enum OrchestrationService {
                 LocalDate dateTime = LocalDate.parse(magazineString[3].trim());
                 magazine.setPublishedAt(dateTime);
                 abstractBooks.add(magazine);
+
+
             }
+            index++;
         } while (line != null);
     }
 
-    private void readBooks(BufferedReader authorBufferedReader, List<AbstractBook> abstractBooks) throws IOException {
+    private void readBooks(BufferedReader bookBufferedReader, List<AbstractBook> abstractBooks) throws IOException {
         String line;
+        int index=0;
         do {
-            line = authorBufferedReader.readLine();
-            if (line != null) {
-                String[] bookString = line.toString().split(";");
-                Book book = new Book();
-                book.setTitle(bookString[0].trim());
-                book.setIsbn(bookString[1].trim());
-                String[] writers = bookString[2].trim().split(",");
-                for (String writer : writers) {
-                    Optional<Author> author = Author.getAuthors().stream().filter(f -> f.getEmail().equals(writer)).findAny();
-                    if (author.isPresent()) {
-                        book.addAuthors(author.get());
+            line = bookBufferedReader.readLine();
+                if (index!=0 && line != null) {
+                    String[] bookString = line.toString().split(";");
+                    Book book = new Book();
+                    book.setTitle(bookString[0].trim());
+                    book.setIsbn(bookString[1].trim());
+                    String[] writers = bookString[2].trim().split(",");
+                    for (String writer : writers) {
+                        Optional<Author> author = Author.getAuthors().stream().filter(f -> f.getEmail().equals(writer)).findAny();
+                        if (author.isPresent()) {
+                            book.addAuthors(author.get());
+                        }
                     }
+                    book.setDescription(bookString[3].trim());
+                    abstractBooks.add(book);
                 }
-                book.setDescription(bookString[3].trim());
-                abstractBooks.add(book);
-            }
+            index++;
+
+
         } while (line != null);
     }
 
     private void readAuthors(BufferedReader bookBufferedReader) throws IOException {
         String line;
+        int index=0;
+
         do {
             line = bookBufferedReader.readLine();
-            if (line != null) {
+            if ( index!=0 &&  line != null) {
                 String[] authorString = line.toString().split(";");
                 Author author =
                         new Author(authorString[0].trim(),
                                 authorString[1].trim(),
                                 authorString[2].trim());
                 author.addAuthor(author);
+
             }
+            index++;
+
         } while (line != null);
     }
 
