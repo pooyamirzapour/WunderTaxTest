@@ -3,6 +3,7 @@ package service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 
 public enum  ReadServiceImpl implements ReadService {
 
@@ -11,7 +12,7 @@ public enum  ReadServiceImpl implements ReadService {
     public BufferedReader read(String path) throws IOException {
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(path));
+                reader = new BufferedReader(new FileReader(path));
         } finally {
             if (reader != null)
                 reader.close();

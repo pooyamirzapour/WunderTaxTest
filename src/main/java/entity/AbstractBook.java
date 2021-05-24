@@ -31,7 +31,7 @@ public abstract class AbstractBook {
     }
 
     public void addAuthors(Author author) {
-        this.authors .add( author);
+        this.authors.add( author);
     }
 
 
