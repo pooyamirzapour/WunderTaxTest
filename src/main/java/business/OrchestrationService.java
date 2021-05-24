@@ -9,7 +9,6 @@ import service.ReadServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,10 +37,10 @@ public enum OrchestrationService {
 
     private void readMagazines(BufferedReader magazineBufferedReader, List<AbstractBook> abstractBooks) throws IOException {
         String line;
-        int index=0;
+        int index = 0;
         do {
             line = magazineBufferedReader.readLine();
-            if ( index!=0&&  line != null) {
+            if (index != 0 && line != null) {
                 String[] magazineString = line.toString().split(";");
                 Magazine magazine = new Magazine();
                 magazine.setTitle(magazineString[0].trim());
@@ -54,7 +53,7 @@ public enum OrchestrationService {
                     }
                 }
                 String replace = magazineString[3].trim().replace(".", "-");
-                DateTimeFormatter simpleDateFormat =  DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 LocalDate localDate = LocalDate.parse(replace, simpleDateFormat);
                 magazine.setPublishedAt(localDate);
                 abstractBooks.add(magazine);
@@ -65,24 +64,24 @@ public enum OrchestrationService {
 
     private void readBooks(BufferedReader bookBufferedReader, List<AbstractBook> abstractBooks) throws IOException {
         String line;
-        int index=0;
+        int index = 0;
         do {
             line = bookBufferedReader.readLine();
-                if (index!=0 && line != null) {
-                    String[] bookString = line.toString().split(";");
-                    Book book = new Book();
-                    book.setTitle(bookString[0].trim());
-                    book.setIsbn(bookString[1].trim());
-                    String[] writers = bookString[2].trim().split(",");
-                    for (String writer : writers) {
-                        Optional<Author> author = Author.getAuthors().stream().filter(f -> f.getEmail().equals(writer)).findAny();
-                        if (author.isPresent()) {
-                            book.addAuthors(author.get());
-                        }
+            if (index != 0 && line != null) {
+                String[] bookString = line.toString().split(";");
+                Book book = new Book();
+                book.setTitle(bookString[0].trim());
+                book.setIsbn(bookString[1].trim());
+                String[] writers = bookString[2].trim().split(",");
+                for (String writer : writers) {
+                    Optional<Author> author = Author.getAuthors().stream().filter(f -> f.getEmail().equals(writer)).findAny();
+                    if (author.isPresent()) {
+                        book.addAuthors(author.get());
                     }
-                    book.setDescription(bookString[3].trim());
-                    abstractBooks.add(book);
                 }
+                book.setDescription(bookString[3].trim());
+                abstractBooks.add(book);
+            }
             index++;
 
 
@@ -91,11 +90,11 @@ public enum OrchestrationService {
 
     private void readAuthors(BufferedReader bookBufferedReader) throws IOException {
         String line;
-        int index=0;
+        int index = 0;
 
         do {
             line = bookBufferedReader.readLine();
-            if ( index!=0 &&  line != null) {
+            if (index != 0 && line != null) {
                 String[] authorString = line.toString().split(";");
                 Author author =
                         new Author(authorString[0].trim(),
