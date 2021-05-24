@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,13 +54,10 @@ public enum OrchestrationService {
                     }
                 }
                 String replace = magazineString[3].trim().replace(".", "-");
-                String pattern = "dd-M-yyyy";
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-                LocalDate dateTime = LocalDate.parse( replace);
-                magazine.setPublishedAt(dateTime);
+                DateTimeFormatter simpleDateFormat =  DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate localDate = LocalDate.parse(replace, simpleDateFormat);
+                magazine.setPublishedAt(localDate);
                 abstractBooks.add(magazine);
-
-
             }
             index++;
         } while (line != null);
