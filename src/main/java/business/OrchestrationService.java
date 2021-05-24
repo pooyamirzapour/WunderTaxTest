@@ -9,6 +9,7 @@ import service.ReadServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,10 @@ public enum OrchestrationService {
                         magazine.addAuthors(author.get());
                     }
                 }
-                LocalDate dateTime = LocalDate.parse(magazineString[3].trim());
+                String replace = magazineString[3].trim().replace(".", "-");
+                String pattern = "dd-M-yyyy";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                LocalDate dateTime = LocalDate.parse( replace);
                 magazine.setPublishedAt(dateTime);
                 abstractBooks.add(magazine);
 
