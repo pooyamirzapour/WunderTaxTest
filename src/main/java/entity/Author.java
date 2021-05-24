@@ -1,6 +1,17 @@
 package entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Author {
+
+    public Author( String email,String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+   public static List<Author> authors = new ArrayList<>();
 
     private String firstName;
     private String lastName;
@@ -28,6 +39,14 @@ public class Author {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public static List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void addAuthor(Author author) {
+        this.authors.add( author);
     }
 
     @Override
